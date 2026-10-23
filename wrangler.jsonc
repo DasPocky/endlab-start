@@ -1,0 +1,15 @@
+{
+  // Startseite endlab.de – eigener Worker, unabhängig von den Projekten
+  "name": "endlab-start",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  // Eigene Dateien (Manifest, Service Worker, Icons); der Worker läuft zuerst (www-Umleitung, Sicherheits-Kopfzeilen)
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
+  // So hängt der Worker heute (Stand 23.10.2026, aus Cloudflare gelesen). Mit Schritt E3 (docs/plan.md) wird daraus die
+  // Route „endlab.de/*“, damit „endlab.de/spieltisch*“ als spezifischere Route zum Spieltisch geht.
+  "routes": [
+    { "pattern": "endlab.de", "custom_domain": true },
+    { "pattern": "www.endlab.de", "custom_domain": true }
+  ],
+  "workers_dev": false
+}
