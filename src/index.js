@@ -7,14 +7,13 @@
  */
 
 /**
- * Installierbar erst, wenn der Spieltisch unter endlab.de/spieltisch läuft (Schritt E3): vorher läge er außerhalb
- * der App, seine Daten wären nicht in ihrem Speicher. Bis dahin kein Manifest-Link und kein Installationshinweis.
+ * Installierbar, seit der Spieltisch unter endlab.de/spieltisch läuft (Schritt E3): eine App, ein Speicher für alle Projekte.
  */
-export const INSTALL = false;
+export const INSTALL = true;
 
-/** Projekte auf der Startseite – nach E3: href "/spieltisch/" */
+/** Projekte auf der Startseite (Pfade unter endlab.de – dieselbe App) */
 export const PROJECTS = [
-  { href: "https://spieltisch.endlab.de/", icon: "🎲", name: "Spieltisch", text: "Würfel-, Karten- und Partyspiele für den Abend mit Freunden – direkt im Browser." },
+  { href: "/spieltisch/", icon: "🎲", name: "Spieltisch", text: "Würfel-, Karten- und Partyspiele für den Abend mit Freunden – direkt im Browser." },
 ];
 
 /** Eigene Dateien (in public/, über die Bindung ASSETS) */

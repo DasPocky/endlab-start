@@ -33,8 +33,8 @@ test("Startseite: Projekte, Sicherheits-Kopfzeilen, keine fremden Skripte", asyn
   assert.ok(!/<script(?![^>]*src="\/app\.js")/.test(html), "nur das eigene Skript");
 });
 
-test("Installierbar erst mit dem Schalter: vorher weder Manifest noch Hinweis", () => {
-  assert.equal(INSTALL, false);
+test("Installierbar mit dem Schalter (seit E3 an): ohne weder Manifest noch Hinweis", () => {
+  assert.equal(INSTALL, true);
   assert.ok(!page(false).includes("manifest.webmanifest"));
   assert.ok(!page(false).includes("EndLab installieren"));
   const on = page(true);
