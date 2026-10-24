@@ -3,8 +3,7 @@
   "name": "endlab-start",
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
-  // Eigene Dateien (Manifest, Service Worker, Icons); der Worker läuft zuerst (www-Umleitung, Sicherheits-Kopfzeilen)
-  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": true },
+  // Eigene Dateien (Manifest, Service Worker, Icons) liegen im Code (src/dateien.js) – kein Datei-Upload nötig
   // So hängt der Worker heute (Stand 23.10.2026, aus Cloudflare gelesen). Mit Schritt E3 (docs/plan.md) wird daraus die
   // Route „endlab.de/*“, damit „endlab.de/spieltisch*“ als spezifischere Route zum Spieltisch geht.
   "routes": [

@@ -9,6 +9,8 @@
 /**
  * Installierbar, seit der Spieltisch unter endlab.de/spieltisch läuft (Schritt E3): eine App, ein Speicher für alle Projekte.
  */
+import { DATEIEN } from "./dateien.js";
+
 export const INSTALL = true;
 
 /** Projekte auf der Startseite (Pfade unter endlab.de – dieselbe App) */
@@ -16,7 +18,7 @@ export const PROJECTS = [
   { href: "/spieltisch/", icon: "🎲", name: "Spieltisch", text: "Würfel-, Karten- und Partyspiele für den Abend mit Freunden – direkt im Browser." },
 ];
 
-/** Eigene Dateien (in public/, über die Bindung ASSETS) */
+/** Eigene Dateien (aus public/, per scripts/dateien.mjs in den Code gelegt – kein Datei-Upload nötig) */
 export const FILES = ["/manifest.webmanifest", "/sw.js", "/app.js", "/icons/icon-192.png", "/icons/icon-512.png", "/icons/maskable-512.png", "/icons/apple-touch-icon.png"];
 
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -102,13 +104,12 @@ export default {
     }
     if (request.method !== "GET" && request.method !== "HEAD") return new Response("Nicht erlaubt.", { status: 405, headers: { allow: "GET, HEAD" } });
     if (url.pathname === "/") return new Response(request.method === "HEAD" ? null : page(), { headers: PAGE_HEADERS });
-    if (FILES.includes(url.pathname) && env?.ASSETS) {
-      const res = await env.ASSETS.fetch(request);
-      const headers = new Headers(res.headers);
-      headers.set("x-content-type-options", "nosniff");
-      // Der Service Worker muss bei jedem Besuch frisch geprüft werden (sonst hängen Geräte an einer alten Fassung)
-      if (url.pathname === "/sw.js") headers.set("cache-control", "no-cache");
-      return new Response(res.body, { status: res.status, headers });
+    const file = FILES.includes(url.pathname) ? DATEIEN[url.pathname] : undefined;
+    if (file) {
+      const headers = new Headers({ "content-type": file.type, "x-content-type-options": "nosniff",
+        // Der Service Worker muss bei jedem Besuch frisch geprüft werden (sonst hängen Geräte an einer alten Fassung)
+        "cache-control": url.pathname === "/sw.js" ? "no-cache" : "public, max-age=3600" });
+      return new Response(request.method === "HEAD" ? null : Uint8Array.from(atob(file.b64), (c) => c.charCodeAt(0)), { headers });
     }
     return Response.redirect("https://endlab.de/", 302);
   },
